@@ -1,6 +1,13 @@
 import 'dart:math';
 
+import 'package:firstapp/main_page.dart';
+import 'package:firstapp/next_page.dart';
+import 'package:firstapp/settings.dart';
 import 'package:flutter/material.dart';
+/*import 'package:firstapp/my_flutter_app_icons.dart';
+import 'package:json_theme/json_theme.dart';
+import 'package:flutter/services.dart';
+import 'dart:convert';*/
 
 void main() {
   runApp(const MyApp());
@@ -58,22 +65,54 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       var rngRandom = Random();
 
-      _counter = rngRandom.nextInt(100);
+      _counter = rngRandom.nextInt(101);
 
     });
   }
-int currentPageIndex = 0;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      
-      bottomNavigationBar: NavigationBar(
-        
+
+
+int currentPageIndex = 0;  
+_getDrawerItemWidget(int pos) {
+ switch (pos) {
+ case 0:
+ return new AcceuilBody();
+ case 1:
+ return new NextPageBody();
+ case 2://Nom de votre StatefulWidget dans votre fichier Acceuil
+return new SettingBody();
+
+ 
+
+ default:
+ return new Text("Erreur de page");
+ }
+ }
+
+@override
+ void initState() {
+super.initState();
+ }
+
+ @override
+ Widget build(BuildContext context) {
+ return Column(
+children: [
+ AppBar(
+  key: Key('appBarPrincipale'),
+  title: Text('Test App'),
+),
+ 
+ Expanded(
+  child: Scaffold(
+      body: _getDrawerItemWidget(currentPageIndex),
+  ),
+ ),
+ 
+NavigationBar(         
  onDestinationSelected: (int index) {
- setState(() {
-  
-		currentPageIndex = index;
-});
+  setState(() {  
+      currentPageIndex = index;
+  });
 
 },
 
@@ -88,106 +127,23 @@ icon: Icon(Icons.next_plan),
  label:"Next Page",
  ),
  NavigationDestination(
- selectedIcon: Icon(Icons.bookmark),
+
  icon:Icon(Icons.settings),
  label:"Settings",
  )
  ,
- 
-],
-
+ NavigationDestination(
+ icon: Icon(Icons.music_note),
+label: "Musique Description",
  ),
- 
-        appBar: AppBar(
-          
-          backgroundColor: Colors.red,
-          title: Text(widget.title),
-        ),
-        
-        body: <Widget>[
-  Container(
-    child: ListView(
-      children: <Widget>[
-        Image.asset(
-          'image/mariogif2.gif',
-          width: 500,
-          alignment: Alignment.center,
-        ),
-     /*   Image.network(
-          'https://media.tenor.com/YCzYhcMQsAYAAAAd/super-mario-galaxy-mario-galaxy.gif',
-          width: 500,
-          alignment: Alignment.center,
-        ),*/
-        const Text(
-          'Nombre:',
-        ),
-        Text(
-          '$_counter',
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      ],
-    ),
-  ),
-  Container(
-    color: Colors.green,
-    alignment: Alignment.center,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        
-        ElevatedButton(
-          onPressed: _genRandom,
-          child: const Text('Générer un nombre'),
-        ),
-        Text(
-          '$_counter',
-          style: TextStyle(fontSize: 20),
-        ),
-      ],
-    ),
-  ),
-  Container(
-    color: Color.fromARGB(255, 0, 0, 255),
-    alignment: Alignment.center,
-    child: const Text('Paramètres'),
-  )
-][currentPageIndex],
+ ],
 
+),
+ ],
+ 
+ );
  
         
-        floatingActionButton: Stack(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(left: 31),
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: FloatingActionButton(
-                  onPressed: _decrementCounter,
-                  child: Icon(Icons.exposure_minus_1),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
-                onPressed: _incrementCounter,
-                child: Icon(Icons.plus_one),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: FloatingActionButton(
-                onPressed: _reset,
-              child: Icon(Icons.restart_alt),
-              ),
-              
-            ),
-            
-            
-          ],
-          
-          
-        ));
-        
+      
   }
 }
